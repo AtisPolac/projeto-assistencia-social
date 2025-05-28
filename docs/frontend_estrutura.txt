@@ -1,0 +1,90 @@
+// Componentes principais para o frontend Angular
+// Estrutura de pastas e arquivos para implementação
+
+// src/app/components/
+// - auth/
+//   - login/
+//   - register/
+//   - profile/
+// - dashboard/
+// - grupos/
+//   - grupo-list/
+//   - grupo-detail/
+//   - grupo-form/
+// - assistidos/
+//   - vulneravel-list/
+//   - vulneravel-form/
+//   - assistido-list/
+//   - assistido-detail/
+// - estoque/
+//   - item-list/
+//   - item-form/
+//   - movimentacao-form/
+// - doacoes/
+//   - doacao-form/
+//   - doacao-list/
+//   - doacao-detail/
+//   - comprovante/
+
+// src/app/services/
+// - auth.service.ts
+// - grupo.service.ts
+// - assistido.service.ts
+// - estoque.service.ts
+// - doacao.service.ts
+
+// src/app/models/
+// - user.model.ts
+// - grupo.model.ts
+// - vulneravel.model.ts
+// - assistido.model.ts
+// - item.model.ts
+// - doacao.model.ts
+
+// src/app/shared/
+// - components/
+//   - header/
+//   - sidebar/
+//   - footer/
+//   - loading/
+//   - alert/
+// - guards/
+//   - auth.guard.ts
+//   - admin.guard.ts
+//   - gerenciador.guard.ts
+
+// Estilos globais e temas
+// src/styles.scss
+// src/theme.scss
+
+// Paleta de cores principal
+// Primária: #2196F3 (Azul)
+// Secundária: #4CAF50 (Verde)
+// Alerta: #F44336 (Vermelho)
+// Aviso: #FFC107 (Amarelo)
+// Fundo: #F5F5F5 (Cinza claro)
+// Texto: #212121 (Cinza escuro)
+
+// Tipografia
+// Fonte principal: Roboto
+// Tamanhos:
+// - Título principal: 24px
+// - Subtítulo: 18px
+// - Texto: 14px
+// - Texto pequeno: 12px
+
+// Componentes UI
+// - Cards para informações
+// - Tabelas para listagens
+// - Formulários com validação
+// - Botões com estados visuais claros
+// - Ícones para ações comuns
+// - Breadcrumbs para navegação
+// - Alertas para feedback
+// - Modais para confirmações
+
+// Responsividade
+// - Layout adaptável para desktop, tablet e mobile
+// - Menu colapsável em telas pequenas
+// - Cards em grid para desktop, lista para mobile
+// - Formulários ajustáveis para diferentes tamanhos de tela

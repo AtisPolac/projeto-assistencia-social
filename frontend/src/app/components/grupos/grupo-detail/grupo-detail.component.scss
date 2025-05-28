@@ -1,0 +1,165 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #2196F3;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  
+  p {
+    margin-top: 16px;
+    color: #666;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  
+  button {
+    margin-left: 8px;
+  }
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-card, .ocupacao-card {
+  height: 100%;
+}
+
+.info-item {
+  margin-bottom: 12px;
+  display: flex;
+  
+  .info-label {
+    font-weight: 500;
+    min-width: 150px;
+    color: #666;
+  }
+  
+  .info-value {
+    flex: 1;
+  }
+}
+
+.ocupacao-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  color: white;
+  
+  &.ocupacao-alta {
+    background-color: #F44336;
+  }
+  
+  &.ocupacao-media {
+    background-color: #FFC107;
+  }
+  
+  &.ocupacao-baixa {
+    background-color: #4CAF50;
+  }
+  
+  .ocupacao-value {
+    font-size: 24px;
+    font-weight: 500;
+  }
+  
+  .ocupacao-label {
+    font-size: 14px;
+  }
+}
+
+.ocupacao-details {
+  margin-top: 16px;
+}
+
+.section-card {
+  margin-bottom: 20px;
+  
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    
+    mat-card-title {
+      margin: 0;
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: #666;
+  
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+}
+
+.status-critico {
+  color: #F44336;
+  font-weight: 500;
+}
+
+.status-atencao {
+  color: #FFC107;
+  font-weight: 500;
+}
+
+.status-normal {
+  color: #4CAF50;
+}
+
+.dias-restantes {
+  font-size: 12px;
+  margin-left: 8px;
+}

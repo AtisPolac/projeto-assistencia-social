@@ -1,0 +1,200 @@
+<div class="container">
+  <div class="header">
+    <h1>Relatório de Assistidos</h1>
+  </div>
+
+  <mat-card class="filtro-card">
+    <mat-card-header>
+      <mat-card-title>Filtros</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="filtroForm" (ngSubmit)="gerarRelatorio()">
+        <div class="filtro-grid">
+          <div class="filtro-item">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Data Início</mat-label>
+              <input matInput [matDatepicker]="pickerInicio" formControlName="data_inicio">
+              <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+              <mat-datepicker #pickerInicio></mat-datepicker>
+            </mat-form-field>
+          </div>
+          
+          <div class="filtro-item">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Data Fim</mat-label>
+              <input matInput [matDatepicker]="pickerFim" formControlName="data_fim">
+              <mat-datepicker-toggle matSuffix [for]="pickerFim"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFim></mat-datepicker>
+            </mat-form-field>
+          </div>
+          
+          <div class="filtro-item">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Grupo</mat-label>
+              <mat-select formControlName="grupo">
+                <mat-option value="todos">Todos os Grupos</mat-option>
+                <mat-option value="1">Grupo 1</mat-option>
+                <mat-option value="2">Grupo 2</mat-option>
+                <mat-option value="3">Grupo 3</mat-option>
+                <mat-option value="4">Grupo 4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div class="filtro-item">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Situação</mat-label>
+              <mat-select formControlName="situacao">
+                <mat-option value="todos">Todas as Situações</mat-option>
+                <mat-option value="ativos">Ativos</mat-option>
+                <mat-option value="finalizados">Finalizados</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div class="filtro-actions">
+          <button mat-button type="button" (click)="limparFiltros()">Limpar Filtros</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+            <span *ngIf="!loading">Gerar Relatório</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="relatorioGerado" class="relatorio-container">
+    <div class="relatorio-header">
+      <h2>Resultados</h2>
+      <div class="relatorio-actions">
+        <button mat-raised-button color="primary" (click)="exportarPDF()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          Exportar PDF
+        </button>
+        <button mat-raised-button color="accent" (click)="exportarExcel()">
+          <mat-icon>table_chart</mat-icon>
+          Exportar Excel
+        </button>
+      </div>
+    </div>
+
+    <!-- Resumo -->
+    <mat-card class="resumo-card">
+      <mat-card-header>
+        <mat-card-title>Resumo Geral</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="resumo-grid">
+          <div class="resumo-item">
+            <div class="resumo-value">{{dadosRelatorio.reduce((sum, item) => sum + item.total_assistidos, 0)}}</div>
+            <div class="resumo-label">Total de Assistidos</div>
+          </div>
+          <div class="resumo-item">
+            <div class="resumo-value">{{dadosRelatorio.reduce((sum, item) => sum + item.ativos, 0)}}</div>
+            <div class="resumo-label">Assistidos Ativos</div>
+          </div>
+          <div class="resumo-item">
+            <div class="resumo-value">{{dadosRelatorio.reduce((sum, item) => sum + item.finalizados, 0)}}</div>
+            <div class="resumo-label">Assistências Finalizadas</div>
+          </div>
+          <div class="resumo-item">
+            <div class="resumo-value">{{(dadosRelatorio.reduce((sum, item) => sum + item.tempo_medio_permanencia, 0) / dadosRelatorio.length).toFixed(0)}}</div>
+            <div class="resumo-label">Tempo Médio (dias)</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Gráficos -->
+    <div class="charts-container">
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Distribuição por Grupo</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas id="gruposChart"></canvas>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Situação de Emprego</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas id="situacaoChart"></canvas>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Tempo Médio de Permanência</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas id="tempoChart"></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Tabela de dados -->
+    <mat-card class="tabela-card">
+      <mat-card-header>
+        <mat-card-title>Dados por Grupo</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="dadosRelatorio" class="mat-elevation-z0 full-width">
+          <!-- Grupo Column -->
+          <ng-container matColumnDef="grupo">
+            <th mat-header-cell *matHeaderCellDef>Grupo</th>
+            <td mat-cell *matCellDef="let item">{{item.grupo}}</td>
+          </ng-container>
+
+          <!-- Total Column -->
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let item">{{item.total_assistidos}}</td>
+          </ng-container>
+
+          <!-- Ativos Column -->
+          <ng-container matColumnDef="ativos">
+            <th mat-header-cell *matHeaderCellDef>Ativos</th>
+            <td mat-cell *matCellDef="let item">{{item.ativos}}</td>
+          </ng-container>
+
+          <!-- Finalizados Column -->
+          <ng-container matColumnDef="finalizados">
+            <th mat-header-cell *matHeaderCellDef>Finalizados</th>
+            <td mat-cell *matCellDef="let item">{{item.finalizados}}</td>
+          </ng-container>
+
+          <!-- Tempo Column -->
+          <ng-container matColumnDef="tempo">
+            <th mat-header-cell *matHeaderCellDef>Tempo Médio (dias)</th>
+            <td mat-cell *matCellDef="let item">{{item.tempo_medio_permanencia}}</td>
+          </ng-container>
+
+          <!-- Desempregados Column -->
+          <ng-container matColumnDef="desempregados">
+            <th mat-header-cell *matHeaderCellDef>Desempregados</th>
+            <td mat-cell *matCellDef="let item">{{item.distribuicao_por_situacao.desempregados}}</td>
+          </ng-container>
+
+          <!-- Informais Column -->
+          <ng-container matColumnDef="informais">
+            <th mat-header-cell *matHeaderCellDef>Trabalho Informal</th>
+            <td mat-cell *matCellDef="let item">{{item.distribuicao_por_situacao.informais}}</td>
+          </ng-container>
+
+          <!-- Outros Column -->
+          <ng-container matColumnDef="outros">
+            <th mat-header-cell *matHeaderCellDef>Outros</th>
+            <td mat-cell *matCellDef="let item">{{item.distribuicao_por_situacao.outros}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['grupo', 'total', 'ativos', 'finalizados', 'tempo', 'desempregados', 'informais', 'outros']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['grupo', 'total', 'ativos', 'finalizados', 'tempo', 'desempregados', 'informais', 'outros'];"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="header">
+    <h1>Gestão de Grupos</h1>
+    <button mat-raised-button color="primary" (click)="novoGrupo()">
+      <mat-icon>add</mat-icon>
+      Novo Grupo
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>A carregar grupos...</p>
+      </div>
+
+      <div *ngIf="!loading">
+        <table mat-table [dataSource]="grupos" class="mat-elevation-z0 full-width">
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let grupo">{{grupo.id}}</td>
+          </ng-container>
+
+          <!-- Nome Column -->
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let grupo">{{grupo.nome}}</td>
+          </ng-container>
+
+          <!-- Descrição Column -->
+          <ng-container matColumnDef="descricao">
+            <th mat-header-cell *matHeaderCellDef>Descrição</th>
+            <td mat-cell *matCellDef="let grupo">{{grupo.descricao}}</td>
+          </ng-container>
+
+          <!-- Capacidade Column -->
+          <ng-container matColumnDef="capacidade">
+            <th mat-header-cell *matHeaderCellDef>Capacidade</th>
+            <td mat-cell *matCellDef="let grupo">{{grupo.capacidade_maxima}}</td>
+          </ng-container>
+
+          <!-- Ocupação Column -->
+          <ng-container matColumnDef="ocupacao">
+            <th mat-header-cell *matHeaderCellDef>Ocupação</th>
+            <td mat-cell *matCellDef="let grupo">
+              <div class="ocupacao-container">
+                <div class="ocupacao-text">
+                  {{grupo.assistidos_ativos}} / {{grupo.capacidade_maxima}}
+                  ({{getOcupacaoPercentual(grupo)}}%)
+                </div>
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="getOcupacaoPercentual(grupo)"
+                  [ngClass]="getOcupacaoClass(getOcupacaoPercentual(grupo))">
+                </mat-progress-bar>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Gerenciadores Column -->
+          <ng-container matColumnDef="gerenciadores">
+            <th mat-header-cell *matHeaderCellDef>Gerenciadores</th>
+            <td mat-cell *matCellDef="let grupo">
+              <div class="gerenciadores-badge">
+                {{grupo.gerenciadores}}
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let grupo">
+              <mat-chip-set>
+                <mat-chip [color]="grupo.ativo ? 'primary' : 'warn'" selected>
+                  {{grupo.ativo ? 'Ativo' : 'Inativo'}}
+                </mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <!-- Ações Column -->
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let grupo">
+              <button mat-icon-button color="primary" (click)="verDetalhes(grupo.id)" matTooltip="Ver detalhes">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" (click)="editarGrupo(grupo.id)" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button [color]="grupo.ativo ? 'warn' : 'primary'" (click)="alterarStatus(grupo)" 
+                      [matTooltip]="grupo.ativo ? 'Desativar' : 'Ativar'">
+                <mat-icon>{{grupo.ativo ? 'block' : 'check_circle'}}</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

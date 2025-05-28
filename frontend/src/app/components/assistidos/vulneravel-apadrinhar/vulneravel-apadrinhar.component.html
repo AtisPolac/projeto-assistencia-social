@@ -1,0 +1,122 @@
+<div class="container">
+  <div class="header">
+    <h1>Apadrinhar Vulnerável</h1>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>A carregar dados do vulnerável...</p>
+  </div>
+
+  <div *ngIf="!loading" class="content-container">
+    <!-- Informações do vulnerável -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>Informações do Vulnerável</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Nome:</span>
+            <span class="info-value">{{vulneravel.nome_completo}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">CPF:</span>
+            <span class="info-value">{{vulneravel.cpf}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Data de Nascimento:</span>
+            <span class="info-value">{{vulneravel.data_nascimento | date:'dd/MM/yyyy'}} ({{getIdade(vulneravel.data_nascimento)}} anos)</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Gênero:</span>
+            <span class="info-value">{{vulneravel.genero}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Estado Civil:</span>
+            <span class="info-value">{{vulneravel.estado_civil}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Endereço:</span>
+            <span class="info-value">{{vulneravel.endereco}}, {{vulneravel.bairro}}, {{vulneravel.cidade}}/{{vulneravel.estado}}, CEP {{vulneravel.cep}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Telefone:</span>
+            <span class="info-value">{{vulneravel.telefone}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Email:</span>
+            <span class="info-value">{{vulneravel.email}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Situação de Emprego:</span>
+            <span class="info-value">{{vulneravel.situacao_emprego}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Renda Familiar:</span>
+            <span class="info-value">R$ {{vulneravel.renda_familiar}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Dependentes:</span>
+            <span class="info-value">{{vulneravel.num_dependentes}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Necessidades Especiais:</span>
+            <span class="info-value">{{vulneravel.necessidades_especiais ? 'Sim' : 'Não'}}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="info-label">Observações:</span>
+            <span class="info-value">{{vulneravel.observacoes}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Data de Cadastro:</span>
+            <span class="info-value">{{vulneravel.data_cadastro | date:'dd/MM/yyyy'}}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Tempo de Espera:</span>
+            <span class="info-value">{{getDiasEspera(vulneravel.data_cadastro)}} dias</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Formulário de apadrinhamento -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Apadrinhar</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="apadrinharForm" (ngSubmit)="onSubmit()">
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Grupo</mat-label>
+              <mat-select formControlName="id_grupo" required>
+                <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">
+                  {{grupo.nome}} ({{grupo.vagas_disponiveis}} vagas disponíveis)
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="apadrinharForm.get('id_grupo').hasError('required')">
+                Grupo é obrigatório
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Observações</mat-label>
+              <textarea matInput formControlName="observacoes" rows="4" placeholder="Observações sobre o apadrinhamento"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="apadrinharForm.invalid || submitting">
+              <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+              <span *ngIf="!submitting">Apadrinhar</span>
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

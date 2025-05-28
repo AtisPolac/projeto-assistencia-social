@@ -1,0 +1,47 @@
+<div class="recuperar-senha-container">
+  <mat-card class="recuperar-senha-card">
+    <mat-card-header>
+      <mat-card-title>Sistema de Gerenciamento de Assistência Social</mat-card-title>
+      <mat-card-subtitle>Recuperação de Senha</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="!enviado">
+        <p class="instrucoes">Introduza o seu email para receber instruções de recuperação de senha.</p>
+        
+        <form [formGroup]="recuperarForm" (ngSubmit)="onSubmit()">
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" placeholder="Seu email" required>
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="recuperarForm.get('email').invalid">{{getEmailErrorMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+          
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="recuperarForm.invalid || loading" class="full-width">
+              <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+              <span *ngIf="!loading">Enviar Instruções</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div *ngIf="enviado" class="enviado-container">
+        <mat-icon class="enviado-icon">check_circle</mat-icon>
+        <h2>Email Enviado!</h2>
+        <p>Verifique a sua caixa de entrada para instruções sobre como redefinir a sua senha.</p>
+        <p class="enviado-subtexto">Se não receber o email em alguns minutos, verifique a sua pasta de spam.</p>
+        
+        <button mat-raised-button color="primary" (click)="voltarLogin()" class="full-width">
+          Voltar para Login
+        </button>
+      </div>
+      
+      <div class="form-links" *ngIf="!enviado">
+        <a mat-button routerLink="/auth/login">Voltar para Login</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

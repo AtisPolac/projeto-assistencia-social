@@ -1,0 +1,231 @@
+<div class="container">
+  <div class="header">
+    <h1 *ngIf="!editMode">Detalhes do Grupo</h1>
+    <h1 *ngIf="editMode">Editar Grupo</h1>
+    <div class="header-actions" *ngIf="!editMode">
+      <button mat-raised-button color="primary" [routerLink]="['/grupos', grupoId, 'editar']">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>A carregar dados do grupo...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Formulário de edição -->
+    <div *ngIf="editMode">
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="grupoForm" (ngSubmit)="salvar()">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nome do Grupo</mat-label>
+                <input matInput formControlName="nome" required>
+                <mat-error *ngIf="grupoForm.get('nome').hasError('required')">Nome é obrigatório</mat-error>
+                <mat-error *ngIf="grupoForm.get('nome').hasError('minlength')">Nome deve ter pelo menos 3 caracteres</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descrição</mat-label>
+                <textarea matInput formControlName="descricao" rows="3" required></textarea>
+                <mat-error *ngIf="grupoForm.get('descricao').hasError('required')">Descrição é obrigatória</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Capacidade Máxima</mat-label>
+                <input matInput type="number" formControlName="capacidade_maxima" required>
+                <mat-error *ngIf="grupoForm.get('capacidade_maxima').hasError('required')">Capacidade é obrigatória</mat-error>
+                <mat-error *ngIf="grupoForm.get('capacidade_maxima').hasError('min')">Capacidade deve ser maior que zero</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-slide-toggle formControlName="ativo" color="primary">
+                Grupo Ativo
+              </mat-slide-toggle>
+            </div>
+
+            <div class="form-actions">
+              <button mat-button (click)="cancelar()">Cancelar</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="grupoForm.invalid || loading">
+                <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+                <span *ngIf="!loading">Salvar</span>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Visualização de detalhes -->
+    <div *ngIf="!editMode">
+      <div class="cards-container">
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Informações Gerais</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="info-item">
+              <span class="info-label">Nome:</span>
+              <span class="info-value">{{grupo.nome}}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Descrição:</span>
+              <span class="info-value">{{grupo.descricao}}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Data de Criação:</span>
+              <span class="info-value">{{grupo.data_criacao | date:'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Status:</span>
+              <mat-chip-set>
+                <mat-chip [color]="grupo.ativo ? 'primary' : 'warn'" selected>
+                  {{grupo.ativo ? 'Ativo' : 'Inativo'}}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="ocupacao-card">
+          <mat-card-header>
+            <mat-card-title>Ocupação</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="ocupacao-circle" [ngClass]="getOcupacaoClass()">
+              <div class="ocupacao-value">{{getOcupacaoPercentual()}}%</div>
+              <div class="ocupacao-label">Ocupação</div>
+            </div>
+            <div class="ocupacao-details">
+              <div class="info-item">
+                <span class="info-label">Assistidos Ativos:</span>
+                <span class="info-value">{{grupo.assistidos_ativos}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Capacidade Máxima:</span>
+                <span class="info-value">{{grupo.capacidade_maxima}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Vagas Disponíveis:</span>
+                <span class="info-value">{{grupo.capacidade_maxima - grupo.assistidos_ativos}}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Gerenciadores -->
+      <mat-card class="section-card">
+        <mat-card-header>
+          <mat-card-title>Gerenciadores</mat-card-title>
+          <button mat-mini-fab color="primary" (click)="adicionarGerenciador()" matTooltip="Adicionar Gerenciador">
+            <mat-icon>person_add</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="gerenciadores" class="mat-elevation-z0 full-width">
+            <!-- Nome Column -->
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell *matHeaderCellDef>Nome</th>
+              <td mat-cell *matCellDef="let gerenciador">{{gerenciador.nome}}</td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let gerenciador">{{gerenciador.email}}</td>
+            </ng-container>
+
+            <!-- Data Atribuição Column -->
+            <ng-container matColumnDef="data_atribuicao">
+              <th mat-header-cell *matHeaderCellDef>Data de Atribuição</th>
+              <td mat-cell *matCellDef="let gerenciador">{{gerenciador.data_atribuicao | date:'dd/MM/yyyy'}}</td>
+            </ng-container>
+
+            <!-- Ações Column -->
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef>Ações</th>
+              <td mat-cell *matCellDef="let gerenciador">
+                <button mat-icon-button color="warn" (click)="removerGerenciador(gerenciador.id)" matTooltip="Remover Gerenciador">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="gerenciadoresColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: gerenciadoresColumns;"></tr>
+          </table>
+
+          <div *ngIf="gerenciadores.length === 0" class="empty-state">
+            <mat-icon>people</mat-icon>
+            <p>Nenhum gerenciador atribuído a este grupo</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Assistidos -->
+      <mat-card class="section-card">
+        <mat-card-header>
+          <mat-card-title>Assistidos Ativos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="assistidos" class="mat-elevation-z0 full-width">
+            <!-- Nome Column -->
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell *matHeaderCellDef>Nome</th>
+              <td mat-cell *matCellDef="let assistido">{{assistido.nome}}</td>
+            </ng-container>
+
+            <!-- CPF Column -->
+            <ng-container matColumnDef="cpf">
+              <th mat-header-cell *matHeaderCellDef>CPF</th>
+              <td mat-cell *matCellDef="let assistido">{{assistido.cpf}}</td>
+            </ng-container>
+
+            <!-- Data Início Column -->
+            <ng-container matColumnDef="data_inicio">
+              <th mat-header-cell *matHeaderCellDef>Data de Início</th>
+              <td mat-cell *matCellDef="let assistido">{{assistido.data_inicio | date:'dd/MM/yyyy'}}</td>
+            </ng-container>
+
+            <!-- Data Fim Prevista Column -->
+            <ng-container matColumnDef="data_fim_prevista">
+              <th mat-header-cell *matHeaderCellDef>Data de Término</th>
+              <td mat-cell *matCellDef="let assistido" [ngClass]="getStatusClass(assistido.data_fim_prevista)">
+                {{assistido.data_fim_prevista | date:'dd/MM/yyyy'}}
+                <span class="dias-restantes">({{getDiasRestantes(assistido.data_fim_prevista)}} dias restantes)</span>
+              </td>
+            </ng-container>
+
+            <!-- Ações Column -->
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef>Ações</th>
+              <td mat-cell *matCellDef="let assistido">
+                <button mat-icon-button color="primary" (click)="verAssistido(assistido.id)" matTooltip="Ver Detalhes">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="assistidosColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: assistidosColumns;"></tr>
+          </table>
+
+          <div *ngIf="assistidos.length === 0" class="empty-state">
+            <mat-icon>people</mat-icon>
+            <p>Nenhum assistido ativo neste grupo</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
