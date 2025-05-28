@@ -25,8 +25,8 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Nome do Grupo</mat-label>
                 <input matInput formControlName="nome" required>
-                <mat-error *ngIf="grupoForm.get('nome').hasError('required')">Nome é obrigatório</mat-error>
-                <mat-error *ngIf="grupoForm.get('nome').hasError('minlength')">Nome deve ter pelo menos 3 caracteres</mat-error>
+                <mat-error *ngIf="grupoForm.get('nome')?.hasError('required')">Nome é obrigatório</mat-error>
+                <mat-error *ngIf="grupoForm.get('nome')?.hasError('minlength')">Nome deve ter pelo menos 3 caracteres</mat-error>
               </mat-form-field>
             </div>
 
@@ -34,7 +34,7 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Descrição</mat-label>
                 <textarea matInput formControlName="descricao" rows="3" required></textarea>
-                <mat-error *ngIf="grupoForm.get('descricao').hasError('required')">Descrição é obrigatória</mat-error>
+                <mat-error *ngIf="grupoForm.get('descricao')?.hasError('required')">Descrição é obrigatória</mat-error>
               </mat-form-field>
             </div>
 
@@ -42,8 +42,8 @@
               <mat-form-field appearance="outline">
                 <mat-label>Capacidade Máxima</mat-label>
                 <input matInput type="number" formControlName="capacidade_maxima" required>
-                <mat-error *ngIf="grupoForm.get('capacidade_maxima').hasError('required')">Capacidade é obrigatória</mat-error>
-                <mat-error *ngIf="grupoForm.get('capacidade_maxima').hasError('min')">Capacidade deve ser maior que zero</mat-error>
+                <mat-error *ngIf="grupoForm.get('capacidade_maxima')?.hasError('required')">Capacidade é obrigatória</mat-error>
+                <mat-error *ngIf="grupoForm.get('capacidade_maxima')?.hasError('min')">Capacidade deve ser maior que zero</mat-error>
               </mat-form-field>
             </div>
 

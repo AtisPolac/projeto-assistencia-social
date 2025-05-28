@@ -3,6 +3,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
+import { RouterModule } from '@angular/router';
 
 interface Gerenciador {
   id: number;
@@ -22,16 +36,32 @@ interface Assistido {
 @Component({
   selector: 'app-grupo-detail',
   templateUrl: './grupo-detail.component.html',
-  styleUrls: ['./grupo-detail.component.scss']
+  styleUrls: ['./grupo-detail.component.scss'],
+    imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    MatIconModule,
+    MatTableModule,
+    MatChipsModule,
+    RouterModule
+  ]
 })
 export class GrupoDetailComponent implements OnInit {
-  grupoId: number;
+  grupoId!: number;
   grupo: any = {};
   gerenciadores: Gerenciador[] = [];
   assistidos: Assistido[] = [];
   loading = true;
   editMode = false;
-  grupoForm: FormGroup;
+  grupoForm!: FormGroup;
   
   gerenciadoresColumns: string[] = ['nome', 'email', 'data_atribuicao', 'acoes'];
   assistidosColumns: string[] = ['nome', 'cpf', 'data_inicio', 'data_fim_prevista', 'acoes'];
@@ -45,7 +75,8 @@ export class GrupoDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.grupoId = +this.route.snapshot.paramMap.get('id');
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.grupoId = idParam !== null ? +idParam : 0;
     this.editMode = this.router.url.includes('/editar');
     
     this.initForm();

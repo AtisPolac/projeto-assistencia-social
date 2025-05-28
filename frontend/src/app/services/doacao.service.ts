@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -40,13 +40,13 @@ export class DoacaoService {
       );
   }
 
-  downloadComprovantePDF(id: number): Observable<Blob> {
+    downloadComprovantePDF(id: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${id}/comprovante/pdf`, { responseType: 'blob' })
       .pipe(
-        catchError(this.handleError('downloadComprovantePDF'))
+        catchError(this.handleError('downloadComprovantePDF')),
+        map(res => res as Blob)
       );
   }
-
   getDoacoesPorAssistido(idAssistido: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/assistido/${idAssistido}`)
       .pipe(

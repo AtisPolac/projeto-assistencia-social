@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -34,17 +35,15 @@ export class RelatorioService {
   }
 
   exportarRelatorioPDF(tipo: string, filtros: any): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}/${tipo}/pdf`, filtros, { responseType: 'blob' })
-      .pipe(
-        catchError(this.handleError('exportarRelatorioPDF'))
-      );
+    return this.http.post(`${this.apiUrl}/${tipo}/pdf`, filtros, {
+      responseType: 'blob'
+    }) as Observable<Blob>;
   }
 
   exportarRelatorioExcel(tipo: string, filtros: any): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}/${tipo}/excel`, filtros, { responseType: 'blob' })
-      .pipe(
-        catchError(this.handleError('exportarRelatorioExcel'))
-      );
+    return this.http.post(`${this.apiUrl}/${tipo}/excel`, filtros, {
+      responseType: 'blob'
+    }) as Observable<Blob>;
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

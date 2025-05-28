@@ -15,7 +15,7 @@
               <mat-label>Email</mat-label>
               <input matInput formControlName="email" placeholder="Seu email" required>
               <mat-icon matSuffix>email</mat-icon>
-              <mat-error *ngIf="recuperarForm.get('email').invalid">{{getEmailErrorMessage()}}</mat-error>
+              <mat-error *ngIf="recuperarForm.get('email')?.invalid">{{getEmailErrorMessage()}}</mat-error>
             </mat-form-field>
           </div>
           

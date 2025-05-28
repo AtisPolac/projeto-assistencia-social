@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatOptionModule } from '@angular/material/core';
 
 interface Vulneravel {
   id: number;
@@ -32,15 +42,28 @@ interface Grupo {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-vulneravel-apadrinhar',
   templateUrl: './vulneravel-apadrinhar.component.html',
-  styleUrls: ['./vulneravel-apadrinhar.component.scss']
+  styleUrls: ['./vulneravel-apadrinhar.component.scss'],
+    imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatOptionModule,
+  ]
 })
 export class VulneravelApadrinharComponent implements OnInit {
-  vulneravelId: number;
-  vulneravel: Vulneravel;
+  vulneravelId!: number;
+  vulneravel!: Vulneravel;
   grupos: Grupo[] = [];
-  apadrinharForm: FormGroup;
+  apadrinharForm!: FormGroup;
   loading = true;
   submitting = false;
 
@@ -48,11 +71,12 @@ export class VulneravelApadrinharComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
-    this.vulneravelId = +this.route.snapshot.paramMap.get('id');
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.vulneravelId = idParam !== null ? +idParam : 0;
     
     this.apadrinharForm = this.formBuilder.group({
       id_grupo: ['', Validators.required],

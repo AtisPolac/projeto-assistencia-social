@@ -87,19 +87,19 @@
       <mat-card-content>
         <div class="resumo-grid">
           <div class="resumo-item">
-            <div class="resumo-value">{{dadosRelatorio.reduce((sum, item) => sum + item.total_assistidos, 0)}}</div>
+            <div class="resumo-value">{{ mediaTempoPermanencia() }}</div>
             <div class="resumo-label">Total de Assistidos</div>
           </div>
           <div class="resumo-item">
-            <div class="resumo-value">{{dadosRelatorio.reduce((sum, item) => sum + item.ativos, 0)}}</div>
+            <div class="resumo-value">{{ somaAtivos() }}</div>
             <div class="resumo-label">Assistidos Ativos</div>
           </div>
           <div class="resumo-item">
-            <div class="resumo-value">{{dadosRelatorio.reduce((sum, item) => sum + item.finalizados, 0)}}</div>
+            <div class="resumo-value">{{ somaFinalizados() }}</div>
             <div class="resumo-label">Assistências Finalizadas</div>
           </div>
           <div class="resumo-item">
-            <div class="resumo-value">{{(dadosRelatorio.reduce((sum, item) => sum + item.tempo_medio_permanencia, 0) / dadosRelatorio.length).toFixed(0)}}</div>
+            <div class="resumo-value">{{ (+mediaTempoPermanencia() / dadosRelatorio.length).toFixed(0)}}</div>
             <div class="resumo-label">Tempo Médio (dias)</div>
           </div>
         </div>

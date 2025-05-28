@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     
     if (currentUser) {
       // Verifica se a rota requer permissões específicas
-      if (route.data.roles && !this.checkRoles(currentUser, route.data.roles)) {
+      if (route.data['roles'] && !this.checkRoles(currentUser, route.data['roles'])) {
         // Usuário não tem permissão para acessar esta rota
         this.snackBar.open('Você não tem permissão para acessar esta página.', 'Fechar', {
           duration: 5000

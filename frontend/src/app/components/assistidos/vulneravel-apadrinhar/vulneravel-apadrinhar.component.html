@@ -95,7 +95,7 @@
                   {{grupo.nome}} ({{grupo.vagas_disponiveis}} vagas disponíveis)
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="apadrinharForm.get('id_grupo').hasError('required')">
+              <mat-error *ngIf="apadrinharForm.get('id_grupo')?.hasError('required')">
                 Grupo é obrigatório
               </mat-error>
             </mat-form-field>

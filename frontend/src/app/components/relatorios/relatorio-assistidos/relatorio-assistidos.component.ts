@@ -1,6 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
+import { RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 interface RelatorioAssistidos {
   grupo: string;
@@ -18,15 +34,33 @@ interface RelatorioAssistidos {
 @Component({
   selector: 'app-relatorio-assistidos',
   templateUrl: './relatorio-assistidos.component.html',
-  styleUrls: ['./relatorio-assistidos.component.scss']
+  styleUrls: ['./relatorio-assistidos.component.scss'],
+  imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    MatIconModule,
+    MatTableModule,
+    MatChipsModule,
+    RouterModule,
+    MatDatepickerModule,
+    MatTooltipModule,
+  ]
 })
 export class RelatorioAssistidosComponent implements OnInit {
-  filtroForm: FormGroup;
+  filtroForm!: FormGroup;
   loading = false;
   relatorioGerado = false;
   dadosRelatorio: RelatorioAssistidos[] = [];
-  
-  // Dados para gráficos
+
+  // Dados para gráficos (exemplo fixo)
   chartData = {
     labels: ['Grupo 1', 'Grupo 2', 'Grupo 3', 'Grupo 4'],
     datasets: [{
@@ -34,7 +68,7 @@ export class RelatorioAssistidosComponent implements OnInit {
       backgroundColor: ['#2196F3', '#4CAF50', '#FFC107', '#F44336']
     }]
   };
-  
+
   situacaoChartData = {
     labels: ['Desempregados', 'Trabalho Informal', 'Outros'],
     datasets: [{
@@ -42,7 +76,7 @@ export class RelatorioAssistidosComponent implements OnInit {
       backgroundColor: ['#F44336', '#FFC107', '#2196F3']
     }]
   };
-  
+
   tempoChartData = {
     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
     datasets: [{
@@ -74,7 +108,7 @@ export class RelatorioAssistidosComponent implements OnInit {
     }
 
     this.loading = true;
-    
+
     // Simulação de geração de relatório
     setTimeout(() => {
       this.dadosRelatorio = [
@@ -127,7 +161,7 @@ export class RelatorioAssistidosComponent implements OnInit {
           }
         }
       ];
-      
+
       this.loading = false;
       this.relatorioGerado = true;
     }, 1500);
@@ -137,16 +171,14 @@ export class RelatorioAssistidosComponent implements OnInit {
     this.snackBar.open('Exportando relatório em PDF...', 'Fechar', {
       duration: 3000
     });
-    
-    // Implementação futura: exportação real para PDF
+    // Implementação futura
   }
 
   exportarExcel(): void {
     this.snackBar.open('Exportando relatório em Excel...', 'Fechar', {
       duration: 3000
     });
-    
-    // Implementação futura: exportação real para Excel
+    // Implementação futura
   }
 
   limparFiltros(): void {
@@ -156,7 +188,22 @@ export class RelatorioAssistidosComponent implements OnInit {
       grupo: 'todos',
       situacao: 'todos'
     });
-    
     this.relatorioGerado = false;
   }
+
+  // Getter para média do tempo médio de permanência
+  somaAtivos(): number {
+    return this.dadosRelatorio.reduce((sum, item) => sum + item.ativos, 0);
+  }
+
+  somaFinalizados(): number {
+    return this.dadosRelatorio.reduce((sum, item) => sum + item.finalizados, 0);
+  }
+
+  mediaTempoPermanencia(): string {
+    if(this.dadosRelatorio.length === 0) return '0';
+    const soma = this.dadosRelatorio.reduce((sum, item) => sum + item.tempo_medio_permanencia, 0);
+    return (soma / this.dadosRelatorio.length).toFixed(0);
+  }
 }
+

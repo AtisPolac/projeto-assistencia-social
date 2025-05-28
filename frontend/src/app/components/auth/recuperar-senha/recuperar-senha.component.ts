@@ -2,14 +2,41 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+
 
 @Component({
   selector: 'app-recuperar-senha',
   templateUrl: './recuperar-senha.component.html',
-  styleUrls: ['./recuperar-senha.component.scss']
+  styleUrls: ['./recuperar-senha.component.scss'],
+    imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    MatIconModule,
+    MatTableModule
+  ]
 })
 export class RecuperarSenhaComponent implements OnInit {
-  recuperarForm: FormGroup;
+  recuperarForm!: FormGroup;
   loading = false;
   enviado = false;
 
@@ -46,10 +73,11 @@ export class RecuperarSenhaComponent implements OnInit {
   }
 
   getEmailErrorMessage() {
-    if (this.recuperarForm.get('email').hasError('required')) {
+    const emailControl = this.recuperarForm.get('email');
+    if (emailControl && emailControl.hasError('required')) {
       return 'Email é obrigatório';
     }
-    return this.recuperarForm.get('email').hasError('email') ? 'Email inválido' : '';
+    return emailControl && emailControl.hasError('email') ? 'Email inválido' : '';
   }
 
   voltarLogin(): void {

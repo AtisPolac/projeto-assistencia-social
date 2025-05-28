@@ -2,6 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 
 interface Vulneravel {
   id: number;
@@ -16,9 +28,24 @@ interface Vulneravel {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-vulneravel-list',
   templateUrl: './vulneravel-list.component.html',
-  styleUrls: ['./vulneravel-list.component.scss']
+  styleUrls: ['./vulneravel-list.component.scss'],
+    imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    MatIconModule,
+    MatTableModule
+  ]
 })
 export class VulneravelListComponent implements OnInit {
   vulneraveis: Vulneravel[] = [];
