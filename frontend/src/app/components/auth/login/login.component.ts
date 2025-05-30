@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
@@ -36,7 +35,8 @@ import { AuthService } from '../../../services/auth.service'; // Import your Aut
     MatOptionModule,
     MatIconModule,
     MatTableModule,
-    
+    RouterModule
+
   ]
 })
 export class LoginComponent implements OnInit {
@@ -79,6 +79,13 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  gotoRegister() {
+    console.log('Navigating to register page');
+    this.router.navigate(['/register']);  
+  }
+  gotoRecuperarSenha() {
+    this.router.navigate(['/recuperar-senha']);
+  }
 
   getEmailErrorMessage() {
     const emailControl = this.loginForm.get('email');

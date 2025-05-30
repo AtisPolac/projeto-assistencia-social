@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 
 
 @Component({
+  standalone: true,
   selector: 'app-recuperar-senha',
   templateUrl: './recuperar-senha.component.html',
   styleUrls: ['./recuperar-senha.component.scss'],
@@ -32,7 +33,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSnackBarModule,
     MatOptionModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    RouterModule
   ]
 })
 export class RecuperarSenhaComponent implements OnInit {
