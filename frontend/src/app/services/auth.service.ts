@@ -4,6 +4,12 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
+interface User {
+  email: string;
+  role: 'admin' | 'gerenciador' | 'user';
+  token?: string; // opcional, se tiver autenticação real
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,21 +17,31 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
   private tokenKey = 'auth_token';
   private userKey = 'user_data';
+  private storageKey = 'loggedUser';
 
   constructor(private http: HttpClient) { }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { email, password })
-      .pipe(
-        tap(response => {
-          if (response && response.token) {
-            this.setToken(response.token);
-            this.setUserData(response.user);
-          }
-        }),
-        catchError(this.handleError('login', []))
-      );
+  login(email: string, password: string): boolean {
+    let user: User | null = null;
+
+    if (email === 'admin@teste.com' && password === '123456') {
+      user = { email, role: 'admin' };
+    } else if (email === 'gerenciador@teste.com' && password === '123456') {
+      user = { email, role: 'gerenciador' };
+    } else if (email === 'user@teste.com' && password === '123456') {
+      user = { email, role: 'user' };
+    }
+
+    if (user) {
+      localStorage.setItem(this.storageKey, JSON.stringify(user));
+      this.setToken('fake-token'); // <-- ADICIONE ISTO
+      this.setUserData(user);      // <-- Para isAdmin / isGerenciador
+      return true;
+    }
+
+    return false;
   }
+
 
   register(userData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData)

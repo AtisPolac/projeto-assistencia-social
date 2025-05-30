@@ -87,7 +87,7 @@
       <mat-card-content>
         <div class="resumo-grid">
           <div class="resumo-item">
-            <div class="resumo-value">{{ mediaTempoPermanencia() }}</div>
+            <div class="resumo-value">{{ somaAssitidos() }}</div>
             <div class="resumo-label">Total de Assistidos</div>
           </div>
           <div class="resumo-item">
@@ -99,7 +99,7 @@
             <div class="resumo-label">Assistências Finalizadas</div>
           </div>
           <div class="resumo-item">
-            <div class="resumo-value">{{ (+mediaTempoPermanencia() / dadosRelatorio.length).toFixed(0)}}</div>
+            <div class="resumo-value">{{ (+mediaTempoPermanencia()) }}</div>
             <div class="resumo-label">Tempo Médio (dias)</div>
           </div>
         </div>
@@ -113,7 +113,7 @@
           <mat-card-title>Distribuição por Grupo</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas id="gruposChart"></canvas>
+          <canvas #gruposChart id="gruposChart"></canvas>
         </mat-card-content>
       </mat-card>
 
@@ -122,7 +122,7 @@
           <mat-card-title>Situação de Emprego</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas id="situacaoChart"></canvas>
+          <canvas #situacaoChart id="situacaoChart"></canvas>
         </mat-card-content>
       </mat-card>
 
@@ -131,7 +131,7 @@
           <mat-card-title>Tempo Médio de Permanência</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas id="tempoChart"></canvas>
+          <canvas #tempoChart id="tempoChart"></canvas>
         </mat-card-content>
       </mat-card>
     </div>

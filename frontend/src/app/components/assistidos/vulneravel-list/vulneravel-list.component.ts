@@ -75,7 +75,7 @@ export class VulneravelListComponent implements OnInit {
           telefone: '(11) 98765-4321',
           cidade: 'São Paulo',
           estado: 'SP',
-          data_cadastro: new Date(2025, 4, 10),
+          data_cadastro: new Date(2025, 4, 29),
           situacao_emprego: 'Desempregado'
         },
         {
@@ -121,7 +121,7 @@ export class VulneravelListComponent implements OnInit {
   }
 
   apadrinhar(id: number): void {
-    this.router.navigate(['/vulneraveis', id, 'apadrinhar']);
+    this.router.navigate(['/vulneraveis', 'apadrinhar', id]);
   }
 
   novoVulneravel(): void {

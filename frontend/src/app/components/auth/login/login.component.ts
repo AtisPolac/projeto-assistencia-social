@@ -14,8 +14,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../services/auth.service'; // Import your AuthService
+
 
 @Component({
+  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
@@ -31,7 +35,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSnackBarModule,
     MatOptionModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    
   ]
 })
 export class LoginComponent implements OnInit {
@@ -42,7 +47,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private toastr: ToastrService,
+    private authService: AuthService // Inject your AuthService
   ) { }
 
   ngOnInit(): void {
@@ -53,19 +59,26 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
+    const { email, password } = this.loginForm.value;
     this.loading = true;
-    
-    // Aqui será implementada a integração com o serviço de autenticação
-    // Por enquanto, simulamos um login bem-sucedido após 1 segundo
-    setTimeout(() => {
+
+    try {
+      const result = this.authService.login(email, password);
       this.loading = false;
-      this.router.navigate(['/dashboard']);
-    }, 1000);
+      if (result) {
+        this.toastr.success('Login realizado com sucesso!');
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.toastr.error('Email ou senha incorretos.');
+      }
+    } catch (err: any) {
+      this.loading = false;
+      this.toastr.error(err?.message || 'Email ou senha incorretos.');
+    }
   }
+
 
   getEmailErrorMessage() {
     const emailControl = this.loginForm.get('email');

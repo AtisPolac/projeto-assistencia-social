@@ -91,7 +91,10 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Grupo</mat-label>
               <mat-select formControlName="id_grupo" required>
-                <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">
+                <mat-option 
+                  *ngFor="let grupo of grupos" 
+                  [value]="grupo.id"
+                  [disabled]="grupo.vagas_disponiveis === 0">
                   {{grupo.nome}} ({{grupo.vagas_disponiveis}} vagas disponíveis)
                 </mat-option>
               </mat-select>

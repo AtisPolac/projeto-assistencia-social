@@ -1,9 +1,4 @@
 <div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1>Dashboard</h1>
-    <p class="welcome-message">Bem-vindo ao Sistema de Gerenciamento de Assistência Social</p>
-  </div>
-
   <!-- Cards de resumo -->
   <div class="dashboard-cards">
     <mat-card *ngFor="let card of cards" class="dashboard-card" [ngStyle]="{'border-top': '4px solid ' + card.color}" (click)="navigateTo(card.route)">
@@ -21,27 +16,6 @@
 
   <!-- Gráficos e alertas -->
   <div class="dashboard-charts-alerts">
-    <!-- Gráficos -->
-    <div class="dashboard-charts">
-      <mat-card class="chart-card">
-        <mat-card-header>
-          <mat-card-title>Distribuição de Assistidos por Grupo</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <canvas id="pieChart"></canvas>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="chart-card">
-        <mat-card-header>
-          <mat-card-title>Doações por Mês</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <canvas id="lineChart"></canvas>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
     <!-- Alertas -->
     <div class="dashboard-alerts">
       <mat-card>
@@ -51,10 +25,13 @@
         <mat-card-content>
           <mat-list>
             <mat-list-item *ngFor="let alert of alerts" [ngClass]="getSeverityClass(alert.severity)" (click)="navigateTo(alert.route)">
-              <mat-icon matListItemIcon>{{alert.icon}}</mat-icon>
-              <div matListItemTitle>{{alert.title}}</div>
-              <div matListItemLine>{{alert.description}}</div>
-              <div matListItemMeta>{{alert.date | date:'dd/MM/yyyy'}}</div>
+              <mat-icon matListItemIcon>{{ alert.icon }}</mat-icon>
+              
+              <div class="alert-content">
+                <div class="alert-title">{{ alert.title }}</div>
+                <div class="alert-description">{{ alert.description }}</div>
+                <div class="alert-date">{{ alert.date | date:'dd/MM/yyyy' }}</div>
+              </div>
             </mat-list-item>
           </mat-list>
         </mat-card-content>
@@ -65,7 +42,7 @@
   <!-- Tabelas de informações -->
   <div class="dashboard-tables">
     <!-- Doações recentes -->
-    <mat-card class="table-card">
+    <mat-card style="width: 95vw" class="table-card">
       <mat-card-header>
         <mat-card-title>Doações Recentes</mat-card-title>
       </mat-card-header>
@@ -107,47 +84,6 @@
 
         <div class="table-footer">
           <button mat-button color="primary" (click)="navigateTo('/doacoes')">Ver todas as doações</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Itens com estoque baixo -->
-    <mat-card class="table-card">
-      <mat-card-header>
-        <mat-card-title>Itens com Estoque Baixo</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <table mat-table [dataSource]="lowStockItems" class="mat-elevation-z0">
-          <!-- ID Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let item">{{item.id}}</td>
-          </ng-container>
-
-          <!-- Nome Column -->
-          <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef>Nome</th>
-            <td mat-cell *matCellDef="let item">{{item.nome}}</td>
-          </ng-container>
-
-          <!-- Atual Column -->
-          <ng-container matColumnDef="atual">
-            <th mat-header-cell *matHeaderCellDef>Atual</th>
-            <td mat-cell *matCellDef="let item" [ngClass]="{'stock-critical': item.atual < item.minimo}">{{item.atual}}</td>
-          </ng-container>
-
-          <!-- Mínimo Column -->
-          <ng-container matColumnDef="minimo">
-            <th mat-header-cell *matHeaderCellDef>Mínimo</th>
-            <td mat-cell *matCellDef="let item">{{item.minimo}}</td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="['id', 'nome', 'atual', 'minimo']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['id', 'nome', 'atual', 'minimo'];" (click)="navigateTo('/estoque/' + row.id)"></tr>
-        </table>
-
-        <div class="table-footer">
-          <button mat-button color="primary" (click)="navigateTo('/estoque/baixo')">Ver todos os itens com estoque baixo</button>
         </div>
       </mat-card-content>
     </mat-card>

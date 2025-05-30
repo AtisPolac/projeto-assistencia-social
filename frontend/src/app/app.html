@@ -1,2 +1,7 @@
+<app-navbar *ngIf="showNavbar()" />
 
-<router-outlet />
+<div [ngStyle]="showNavbar() ? {'margin-top.px': 60, 'margin-bottom.px': 60} : {}">
+  <router-outlet />
+</div>
+
+<app-footer *ngIf="showNavbar()" />

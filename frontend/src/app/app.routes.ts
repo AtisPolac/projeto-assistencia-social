@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,7 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'login',
@@ -27,17 +29,30 @@ export const routes: Routes = [
       import('./components/auth/recuperar-senha/recuperar-senha.component').then(m => m.RecuperarSenhaComponent),
   },
   {
-    path: 'assistidos',
+    path: 'vulneraveis',
     children: [
       {
         path: '',
         loadComponent: () =>
           import('./components/assistidos/vulneravel-list/vulneravel-list.component').then(m => m.VulneravelListComponent),
+        canActivate: [authGuard]
       },
       {
-        path: 'apadrinhar',
+        path: 'apadrinhar/:id',
         loadComponent: () =>
           import('./components/assistidos/vulneravel-apadrinhar/vulneravel-apadrinhar.component').then(m => m.VulneravelApadrinharComponent),
+        canActivate: [authGuard]
+      },
+    ],
+  },
+  {
+    path: 'assistidos',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/assistidos/assistidos-list/assistidos-list.component').then(m => m.AssistidosListComponent),
+        canActivate: [authGuard]
       },
     ],
   },
@@ -45,11 +60,13 @@ export const routes: Routes = [
     path: 'doacoes',
     loadComponent: () =>
       import('./components/doacoes/doacao-list/doacao-list.component').then(m => m.DoacaoListComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'estoque',
     loadComponent: () =>
       import('./components/estoque/item-list/item-list.component').then(m => m.ItemListComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'grupos',
@@ -58,11 +75,13 @@ export const routes: Routes = [
         path: '',
         loadComponent: () =>
           import('./components/grupos/grupo-list/grupo-list.component').then(m => m.GrupoListComponent),
+        canActivate: [authGuard]
       },
       {
         path: ':id',
         loadComponent: () =>
           import('./components/grupos/grupo-detail/grupo-detail.component').then(m => m.GrupoDetailComponent),
+        canActivate: [authGuard]
       },
     ],
   },
@@ -70,6 +89,7 @@ export const routes: Routes = [
     path: 'relatorios',
     loadComponent: () =>
       import('./components/relatorios/relatorio-assistidos/relatorio-assistidos.component').then(m => m.RelatorioAssistidosComponent),
+    canActivate: [authGuard]
   },
   {
     path: '**',

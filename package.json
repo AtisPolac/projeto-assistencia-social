@@ -1,0 +1,11 @@
+{
+  "name": "projeto-assistencia-social",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "cd frontend && npm install && npm run build"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

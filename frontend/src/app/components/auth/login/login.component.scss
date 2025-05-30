@@ -5,6 +5,7 @@
   height: 100vh;
   background-color: #f5f5f5;
   background-image: linear-gradient(135deg, #2196F3 0%, #4CAF50 100%);
+  padding: 1rem;
 }
 
 .login-card {
@@ -12,6 +13,11 @@
   max-width: 400px;
   padding: 20px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .full-width {
@@ -20,17 +26,20 @@
 
 .form-field {
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .form-actions {
   margin-top: 24px;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .form-links {
   display: flex;
   justify-content: space-between;
   margin-top: 16px;
+  width: 100%;
 }
 
 mat-card-header {
@@ -38,18 +47,18 @@ mat-card-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 mat-card-title {
   font-size: 24px;
-  text-align: center;
   margin-bottom: 8px;
   color: #2196F3;
 }
 
 mat-card-subtitle {
   font-size: 16px;
-  text-align: center;
+  color: #555;
 }
 
 button[type="submit"] {
@@ -58,4 +67,27 @@ button[type="submit"] {
 
 mat-spinner {
   margin: 0 auto;
+}
+
+/* Botão "Precisa de assistência?" */
+.assistencia-btn {
+  margin-top: 32px;
+  padding: 14px 0;
+  width: 100%;
+  background: #ff5722;  /* Laranja forte */
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  border: none;
+}
+
+.assistencia-btn:hover {
+  background: #e64a19;  /* Laranja mais escuro no hover */
+  box-shadow: 0 6px 16px rgba(230, 74, 25, 0.8);
 }

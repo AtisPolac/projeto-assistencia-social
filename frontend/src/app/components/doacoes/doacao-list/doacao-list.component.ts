@@ -23,7 +23,7 @@ interface Doacao {
   id_assistido: number;
   gerenciador: string;
   grupo: string;
-  itens: number;
+  itens: string;
   comprovante_gerado: boolean;
 }
 
@@ -74,7 +74,7 @@ export class DoacaoListComponent implements OnInit {
           id_assistido: 1,
           gerenciador: 'Ana Silva',
           grupo: 'Grupo 1',
-          itens: 5,
+          itens: 'Roupas',
           comprovante_gerado: true
         },
         {
@@ -84,7 +84,7 @@ export class DoacaoListComponent implements OnInit {
           id_assistido: 2,
           gerenciador: 'Pedro Santos',
           grupo: 'Grupo 2',
-          itens: 3,
+          itens: 'Cesta Básica',
           comprovante_gerado: true
         },
         {
@@ -94,7 +94,7 @@ export class DoacaoListComponent implements OnInit {
           id_assistido: 3,
           gerenciador: 'Ana Silva',
           grupo: 'Grupo 1',
-          itens: 7,
+          itens: 'Cesta Básica',
           comprovante_gerado: false
         },
         {
@@ -104,7 +104,7 @@ export class DoacaoListComponent implements OnInit {
           id_assistido: 4,
           gerenciador: 'Pedro Santos',
           grupo: 'Grupo 2',
-          itens: 4,
+          itens: 'Cesta Básica',
           comprovante_gerado: true
         }
       ];

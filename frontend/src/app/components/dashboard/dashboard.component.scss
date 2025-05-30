@@ -57,6 +57,24 @@
       mat-icon {
         color: white;
       }
+
+      div[matListItemTitle],
+      div[matListItemLine],
+      div[matListItemMeta] {
+        display: flex;
+        flex-direction: column;
+      }
+
+      div[matListItemTitle] {
+        font-weight: bold;
+      }
+
+      div[matListItemMeta] {
+        margin-left: auto;
+        white-space: nowrap;
+        font-size: 0.85em;
+        color: gray;
+      }
     }
     
     .card-title {
@@ -99,38 +117,76 @@
 }
 
 .dashboard-alerts {
+  width: 95vw; // ocupa toda a largura da viewport
+  padding: 0;   // remove espaçamento interno, se tiver
+  margin: 0;    // remove espaçamento externo, se tiver
+
+  mat-card {
+    width: 100%;
+    box-shadow: none; // opcional, remove sombra se quiser flat
+    border-radius: 0; // opcional, tira borda se quiser full-width real
+  }
+
   mat-list-item {
+    display: flex;
+    align-items: flex-start;
     cursor: pointer;
     margin-bottom: 8px;
     border-radius: 4px;
-    
+
+    mat-icon {
+      margin-right: 12px;
+      margin-top: 4px;
+    }
+
+    .alert-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .alert-title {
+      font-weight: 600;
+    }
+
+    .alert-description {
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    .alert-date {
+      font-size: 0.8em;
+      color: #888;
+    }
+
     &.severity-high {
       background-color: rgba(244, 67, 54, 0.1);
       border-left: 4px solid #F44336;
     }
-    
+
     &.severity-medium {
       background-color: rgba(255, 193, 7, 0.1);
       border-left: 4px solid #FFC107;
     }
-    
+
     &.severity-low {
       background-color: rgba(33, 150, 243, 0.1);
       border-left: 4px solid #2196F3;
     }
-    
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.04);
     }
   }
 }
 
+
+
 .dashboard-tables {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   
-  @media (max-width: 992px) {
+  @media (max-width: 100px) {
     grid-template-columns: 1fr;
   }
   

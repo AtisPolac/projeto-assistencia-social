@@ -112,10 +112,10 @@ export class VulneravelApadrinharComponent implements OnInit {
       };
       
       this.grupos = [
-        { id: 1, nome: 'Grupo 1', vagas_disponiveis: 5 },
-        { id: 2, nome: 'Grupo 2', vagas_disponiveis: 3 },
-        { id: 3, nome: 'Grupo 3', vagas_disponiveis: 5 },
-        { id: 4, nome: 'Grupo 4', vagas_disponiveis: 7 }
+        { id: 1, nome: 'Grupo 1', vagas_disponiveis: 2 },
+        { id: 2, nome: 'Grupo 2', vagas_disponiveis: 2 },
+        { id: 3, nome: 'Grupo 3', vagas_disponiveis: 1 },
+        { id: 4, nome: 'Grupo 4', vagas_disponiveis: 0 }
       ];
       
       this.loading = false;
