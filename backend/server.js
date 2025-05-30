@@ -6,7 +6,7 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const frontendPath = path.join(__dirname, '../../../Projetos/projeto-assistencia-social/frontend/dist/frontend/browser');
+const frontendPath = path.join(__dirname, './../frontend/dist/frontend/browser');
 console.log('Frontend path:', frontendPath);
 console.log('Index.html exists:', fs.existsSync(path.join(frontendPath, 'index.html')));
 
